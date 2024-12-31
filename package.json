@@ -5,10 +5,22 @@
   "type": "module",
   "scripts": {
     "start": "node index.js",
-    "dev": "node --watch --no-warnings index.js"
+    "dev": "node --watch --env-file=.env --no-warnings index.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "description": ""
+  "description": "",
+  "dependencies": {
+    "@colors/colors": "^1.6.0",
+    "bcryptjs": "^2.4.3",
+    "cookie-parser": "^1.4.7",
+    "cors": "^2.8.5",
+    "crypto-js": "^4.2.0",
+    "elliptic": "^6.6.1",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "morgan": "^1.10.0",
+    "socket.io": "^4.8.1"
+  }
 }
