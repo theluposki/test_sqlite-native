@@ -1,27 +1,66 @@
-import  { hashPassword } from '../utils/index.js'
+import { hashPassword, validation } from "../utils/index.js";
 
 class User {
-    constructor(nickname, nome, idade, email, senha) {
-        this.nickname = nickname
-        this.nome = nome
-        this.idade = idade 
-        this.email = email
-        this.senha = senha
+  constructor({ nickname, name, birthdate, email, password }) {
+    this.nickname = nickname;
+    this.name = name;
+    this.birthdate = birthdate;
+    this.email = email;
+    this.password = password;
+  }
+
+  async generatePassword(password) {
+    return await hashPassword.hash(password);
+  }
+  // const all = getAll("user");
+
+  // console.log(all);
+
+  async register() {
+    if (
+      validation.isRequired(
+        {
+          nickname: this.nickname,
+          name: this.name,
+          birthdate: this.birthdate,
+          email: this.email,
+          password: this.password,
+        },
+        ["nickname", "name", "birthdate", "email", "password"]
+      )
+    ) {
+      return validation.isRequired(
+        {
+          nickname: this.nickname,
+          name: this.name,
+          birthdate: this.birthdate,
+          email: this.email,
+          password: this.password,
+        },
+        ["nickname", "name", "birthdate", "email", "password"]
+      );
     }
 
-    async generatePassword (password) {
-        return await hashPassword.hash(password);
+    if (validation.isEmail(this.email)) {
+      return validation.isEmail(this.email);
     }
 
-    async new() {
-        return {
-            nickname: this.nickname,
-            nome: this.nome,
-            idade: this.idade,
-            email: this.email,
-            senha: await this.generatePassword(this.senha)
-        }
+    if (validation.isValidAge(this.birthdate)) {
+      return validation.isValidAge(this.birthdate);
     }
+
+    if (validation.isValidPassword(this.password)) {
+      return validation.isValidPassword(this.password);
+    }
+
+    return {
+      nickname: this.nickname,
+      name: this.name,
+      birthdate: this.birthdate,
+      email: this.email,
+      password: await this.generatePassword(this.password),
+    };
+  }
 }
 
-export default User
+export default User;
