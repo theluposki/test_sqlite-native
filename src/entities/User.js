@@ -1,4 +1,7 @@
 import { hashPassword, validation } from "../utils/index.js";
+import UserService from "../services/UserService.js";
+
+const userService = new UserService();
 
 class User {
   constructor({ nickname, name, birthdate, email, password }) {
@@ -12,11 +15,8 @@ class User {
   async generatePassword(password) {
     return await hashPassword.hash(password);
   }
-  // const all = getAll("user");
 
-  // console.log(all);
-
-  async register() {
+  async new() {
     if (
       validation.isRequired(
         {
