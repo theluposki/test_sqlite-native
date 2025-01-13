@@ -1,6 +1,21 @@
-import { database } from "./database.js";
+import { database,runSeeds } from "./database.js";
 
-const usersTable = () => {
+const dropUsersTable = () => {
+  try {
+    database.exec(` 
+      DROP TABLE IF EXISTS users;
+`);
+    console.log(
+      "[\x1b[1mDB\x1b[0m] tabela de usuários destruida com sucesso! -> function: \x1b[1musersTable\x1b[0m\n"
+    );
+  } catch (error) {
+    console.log(
+      "[\x1b[1mDB\x1b[0m] não foi possivel destruida tabela de usuários!!! -> function: \x1b[1musersTable\x1b[0m\n"
+    );
+  }
+};
+
+const createUsersTable = () => {
   try {
     database.exec(`
       CREATE TABLE IF NOT EXISTS users (
@@ -22,5 +37,7 @@ const usersTable = () => {
 };
 
 export const createTables = () => {
-  usersTable();
+  dropUsersTable();
+  createUsersTable();
+  runSeeds();
 };
