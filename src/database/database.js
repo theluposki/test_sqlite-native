@@ -1,8 +1,22 @@
 import { DatabaseSync } from "node:sqlite";
 import sqlBricks from "sql-bricks";
 import { hashPassword } from "../utils/index.js";
-export const database = new DatabaseSync("db.sql");
 
+
+/**
+ * Establishes a synchronous SQLite database connection.
+ * @type {DatabaseSync}
+ */
+export const database = new DatabaseSync("db.sql");
+/**
+ * Inserts items into a specified table in the database.
+ * 
+ * @function
+ * @param {Object} params - The parameters for the insert operation.
+ * @param {string} params.table - The name of the table to insert into.
+ * @param {Object|Object[]} params.items - The item(s) to insert into the table.
+ * @returns {string} A message indicating success or failure of the operation.
+ */
 export function insert({ table, items }) {
   const { text, values } = sqlBricks
     .insertInto(table, items)
@@ -22,6 +36,16 @@ export function insert({ table, items }) {
   return "[\x1b[1mDB\x1b[0m]  não foi possivel inserir! -> function: \x1b[1minsert\x1b[0m\n";
 }
 
+/**
+ * Selects data from a specified table in the database.
+ * 
+ * @function
+ * @param {Object} params - The parameters for the select operation.
+ * @param {string} params.table - The name of the table to select from.
+ * @param {string|string[]} [params.items="*"] - The columns to select.
+ * @param {string} [params.orderBy="ROWID"] - The column to order the results by.
+ * @returns {string} The selected data in JSON format.
+ */
 export const select = ({ table, items = "*", orderBy = "ROWID" }) => {
   const query = sqlBricks
     .select(...items)
@@ -33,6 +57,13 @@ export const select = ({ table, items = "*", orderBy = "ROWID" }) => {
   return JSON.stringify(result, null, 1);
 };
 
+/**
+ * Seeds the database with initial user data.
+ * 
+ * @async
+ * @function
+ * @returns {Promise<void>} Logs the result of the insert and select operations.
+ */
 export const runSeeds = async () => {
   const seeds = [
     {
