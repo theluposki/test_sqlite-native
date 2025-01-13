@@ -1,4 +1,4 @@
-import { database,runSeeds } from "./database.js";
+import { database  } from "./database.js";
 
 const dropUsersTable = () => {
   try {
@@ -39,5 +39,4 @@ const createUsersTable = () => {
 export const createTables = () => {
   dropUsersTable();
   createUsersTable();
-  runSeeds();
 };

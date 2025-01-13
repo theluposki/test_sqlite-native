@@ -1,0 +1,14 @@
+GET http://localhost:3327 HTTP/1.1
+
+###
+POST http://localhost:3327/api/v1/users HTTP/1.1
+Host: localhost:3327
+content-type: application/json
+
+{
+    "nickname":"luca"
+}
+
+
+###
+GET http://localhost:3327/api/v1/users HTTP/1.1
