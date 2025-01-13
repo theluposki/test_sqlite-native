@@ -2,7 +2,6 @@ import { DatabaseSync } from "node:sqlite";
 import sqlBricks from "sql-bricks";
 import { hashPassword } from "../utils/index.js";
 
-
 /**
  * Establishes a synchronous SQLite database connection.
  * @type {DatabaseSync}
@@ -57,6 +56,27 @@ export const select = ({ table, items = "*", orderBy = "ROWID" }) => {
   return JSON.stringify(result, null, 1);
 };
 
+
+/**
+ * Selects a single record from a specified table with a given condition.
+ * 
+ * @function
+ * @param {Object} params - The parameters for the select operation.
+ * @param {string} params.table - The name of the table to select from.
+ * @param {Object} params.where - The condition to filter the records.
+ * @returns {string} The selected record in JSON format.
+ */
+export const selectBy = ({ table, where }) => {
+    const query = sqlBricks
+      .select('*')
+      .from(table)
+      .where(where)
+      .toString();
+  
+    const result = database.prepare(query).get();
+    return JSON.stringify(result, null, 1);
+  };
+
 /**
  * Seeds the database with initial user data.
  * 
@@ -93,3 +113,5 @@ export const runSeeds = async () => {
 
   console.log(select({ table: "users" }));
 };
+
+console.log(selectBy({ table: 'users', where: { nickname: 'mylena' }}))
