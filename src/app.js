@@ -6,6 +6,7 @@ import config from "./config.js";
 import { errorSync } from "./middlewares/errorSync.js";
 import { errorHandlerJSON } from "./middlewares/errorHandlerJSON.js";
 import cookieParser from "cookie-parser";
+import path from "node:path";
 
 const app = express();
 
@@ -14,16 +15,9 @@ app.use(cookieParser());
 app.use(express.json());
 app.use(errorSync);
 app.use(errorHandlerJSON);
-app.use(morgan('dev'));
+app.use(morgan("dev"));
 routes(app);
 
-app.use(express.json())
-
-
-
-
-app.get("/", (req, res) => {
-  res.status(200).json({ server: "OK" });
-});
+app.use("/docs", express.static("./src/docs"));
 
 export default app;

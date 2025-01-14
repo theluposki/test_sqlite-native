@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Documentação da Rota de Registro de Usuários</title>
+</head>
+<body>
+    <h1>Documentação da Rota de Registro de Usuários</h1>
+
+    <div class="section">
+        <h2>Descrição da Rota</h2>
+        <p>A rota de registro é responsável por criar novos usuários no sistema.</p>
+    </div>
+
+    <div class="section">
+        <h2>Requisitos</h2>
+        <ul>
+            <li>O método HTTP deve ser POST.</li>
+            <li>O endpoint aceita apenas requisições POST.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Parâmetros</h2>
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Obrigatório</th>
+                <th>Descrição</th>
+            </tr>
+            <tr>
+                <td>nickname</td>
+                <td>string</td>
+                <td>Sim</td>
+                <td>Nicknmae do usuário.</td>
+            </tr>
+            <tr>
+                <td>name</td>
+                <td>string</td>
+                <td>Sim</td>
+                <td>Nome completo do usuário.</td>
+            </tr>
+            <tr>
+                <td>birthdate</td>
+                <td>string (formato YYYY-MM-DD)</td>
+                <td>Sim</td>
+                <td>Data de nascimento do usuário.</td>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>string</td>
+                <td>Sim</td>
+                <td>E-mail do usuário.</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>Sim</td>
+                <td>Senha do usuário.</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Validações</h2>
+        <ul>
+            <li>Verifica se o nicknmae já existe.</li>
+            <li>Verifica se o e-mail já existe.</li>
+            <li>Valida a idade do usuário.</li>
+            <li>Valida o formato do e-mail.</li>
+            <li>Valida a força da senha.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Processo de Registro</h2>
+        <ol>
+            <li>Verifica se todos os campos obrigatórios estão presentes.</li>
+            <li>Verifica se o nicknmae e o e-mail já existem no banco de dados.</li>
+            <li>Aplica as validações de idade, e-mail e senha.</li>
+            <li>Criptografa a senha usando bcrypt.</li>
+            <li>Insera o novo usuário no banco de dados.</li>
+            <li Retorna um status 201 com uma mensagem de sucesso.</li>
+        </ol>
+    </div>
+
+    <div class="section">
+        <h2>Resposta Esperada</h2>
+        <pre>
+HTTP/1.1 201 Created
+Content-Type: application/json; charset=utf-8
+
+{
+    "message": "Usuário criado com sucesso!"
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>Tratamento de Erros</h2>
+        <ul>
+            <li>400 Bad Request: Campo obrigatório ausente ou valor inválido.</li>
+            <li>409 Conflict: Nickname ou e-mail já existentes.</li>
+            <li>500 Internal Server Error: Problema interno do servidor.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Implementação</h2>
+        <p>O código-fonte da rota usa Express.js e dependências personalizadas para validação e criptografia de senhas.</p>
+    </div>
+</body>
+</html>

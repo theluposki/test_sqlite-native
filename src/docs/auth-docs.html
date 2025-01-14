@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="style.css">
+    <title>Documentação da Rota de Autenticação</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        h1 {
+            color: #333;
+            border-bottom: 2px solid #333;
+        }
+        h2 {
+            color: #0066cc;
+        }
+        .section {
+            margin-bottom: 30px;
+            padding: 15px;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        pre {
+            background-color: #f4f4f4;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Documentação da Rota de Autenticação</h1>
+
+    <div class="section">
+        <h2>Descrição da Rota</h2>
+        <p>A rota de autenticação é responsável por verificar as credenciais do usuário e gerar um token JWT.</p>
+    </div>
+
+    <div class="section">
+        <h2>Requisitos</h2>
+        <ul>
+            <li>O corpo da requisição deve ser enviado como JSON.</li>
+            <li>O endpoint aceita apenas requisições POST.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Parâmetros</h2>
+        <table>
+            <tr>
+                <th>Nome</th>
+                <th>Tipo</th>
+                <th>Obrigatório</th>
+                <th>Descrição</th>
+            </tr>
+            <tr>
+                <td>email</td>
+                <td>string</td>
+                <td>Sim</td>
+                <td>E-mail do usuário.</td>
+            </tr>
+            <tr>
+                <td>password</td>
+                <td>string</td>
+                <td>Sim</td>
+                <td>Senha do usuário.</td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="section">
+        <h2>Exemplo de Requisição</h2>
+        <pre>
+POST /api/v1/auth HTTP/1.1
+Host: localhost:3000
+Content-Type: application/json
+
+{
+    "email": "exemplo@email.com",
+    "password": "senha123"
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>Resposta Esperada</h2>
+        <pre>
+HTTP/1.1 200 OK
+Content-Type: application/json; charset=utf-8
+
+{
+    "message": "autenticado com sucesso!"
+}
+        </pre>
+    </div>
+
+    <div class="section">
+        <h2>Tratamento de Erros</h2>
+        <ul>
+            <li>400 Bad Request: E-mail ou senha inválidos.</li>
+            <li>500 Internal Server Error: Problema interno do servidor.</li>
+        </ul>
+    </div>
+
+    <div class="section">
+        <h2>Implementação</h2>
+        <p>O código-fonte da rota é implementado usando Express.js e utiliza bcrypt para criptografar senhas e JWT para gerar tokens.</p>
+    </div>
+</body>
+</html>
