@@ -8,7 +8,7 @@ async function readKeyFile(filePath) {
   try {
     return await readFile(filePath);
   } catch (error) {
-    logger.err("jwt",`Erro ao ler o arquivo ${filePath}:`, error);
+    logger.err("jwt", `Erro ao ler o arquivo ${filePath}:`, error);
     throw error;
   }
 }
@@ -23,36 +23,59 @@ try {
 const privateKey = await readKeyFile("private.key");
 const publicKey = await readKeyFile("public.key");
 
-let expires;
-
+let accessExpires, refreshExpires;
 
 try {
   const config = await import("../../config.js");
-  expires = config.default?.app?.tokenExpiresIn
+  accessExpires = config.default?.app?.accessTokenExpiresIn || 1;  // Expiração do access token
+  refreshExpires = config.default?.app?.refreshTokenExpiresIn || 7;  // Expiração do refresh token
 } catch (error) {
-  logger.err("jwt","Erro ao importar config.js:", error);
-  expires = 1;
+  logger.err("jwt", "Erro ao importar config.js:", error);
+  accessExpires = 1;
+  refreshExpires = 7;
 }
 
-export const sign = (userId) => {
-  const tokenPayload = {
-    id: userId,
-    exp: hoursToMilliseconds(expires),
-  };
+const refreshTokens = new Set();
 
-  return jwt.sign(tokenPayload, privateKey.toString(), { algorithm: "RS256" });
+export const signAccessToken = (userId) => {
+  const payload = { id: userId };
+  return jwt.sign(payload, privateKey.toString(), {
+    algorithm: "RS256",
+    expiresIn: `${accessExpires}h`
+  });
 };
 
-export const verify = (token) => {
-  const options = {
-    algorithms: ["RS256"],
-  };
+export const signRefreshToken = (userId) => {
+  const payload = { id: userId };
+  const token = jwt.sign(payload, privateKey.toString(), {
+    algorithm: "RS256",
+    expiresIn: `${refreshExpires}d`
+  });
+  refreshTokens.add(token);
+  return token;
+};
 
+export const verifyAccessToken = (token) => {
+  const options = { algorithms: ["RS256"] };
   return jwt.verify(token, publicKey.toString(), options);
 };
 
-export default {
-  sign,
-  verify
-}
+export const verifyRefreshToken = (token) => {
+  if (!refreshTokens.has(token)) {
+    throw new Error("Refresh token inválido ou expirado");
+  }
+  const options = { algorithms: ["RS256"] };
+  const payload = jwt.verify(token, publicKey.toString(), options);
+  
+  refreshTokens.delete(token); // Uso único — remova após validar
+  return payload;
+};
 
+export const refreshTokensManager = {
+  signAccessToken,
+  signRefreshToken,
+  verifyAccessToken,
+  verifyRefreshToken
+};
+
+export default refreshTokensManager;

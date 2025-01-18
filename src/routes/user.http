@@ -1,6 +1,10 @@
+@set-cookie = true
+
+
+### test server
 GET http://localhost:3327 HTTP/1.1
 
-###
+### register
 POST http://localhost:3327/api/v1/users HTTP/1.1
 Host: localhost:3327
 content-type: application/json
@@ -13,7 +17,7 @@ content-type: application/json
     "password":"MyPassw0rd#2023"
 }
 
-###
+### auth
 POST http://localhost:3327/api/v1/users/auth HTTP/1.1
 Host: localhost:3327
 content-type: application/json
@@ -23,5 +27,6 @@ content-type: application/json
     "password":"MyPassw0rd#2023"
 }
 
-###
+### get all users
 GET http://localhost:3327/api/v1/users HTTP/1.1
+Cookie: token=eyInvalidToken

@@ -6,7 +6,6 @@ import config from "./config.js";
 import { errorSync } from "./middlewares/errorSync.js";
 import { errorHandlerJSON } from "./middlewares/errorHandlerJSON.js";
 import cookieParser from "cookie-parser";
-import path from "node:path";
 
 const app = express();
 
