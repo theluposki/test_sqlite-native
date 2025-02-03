@@ -1,10 +1,11 @@
-import { randomUUID } from "node:crypto";
 import api from "../../database/api/index.js";
-import { hashPassword, validation } from "../../utils/index.js";
-import images from "../../defaults/default_image.js";
+import { validation } from "../../utils/index.js";
 
-export const register = async (req, res) => {
-  const { nickname, name, birthdate, gender, email, password } = req.body;
+export const update = async (req, res) => {
+  const { nickname, name, birthdate, gender, email, image } = req.body;
+  const id = req.user.id;
+
+  console.log("Update id: ", id);
 
   if (!nickname)
     return res.status(400).json({ error: "nickname is required!" });
@@ -13,8 +14,6 @@ export const register = async (req, res) => {
     return res.status(400).json({ error: "birthdate is required!" });
   if (!gender) return res.status(400).json({ error: "gender is required!" });
   if (!email) return res.status(400).json({ error: "e-mail is required!" });
-  if (!password)
-    return res.status(400).json({ error: "password is required!" });
 
   const user_With_This_Nickname_Already_Exists = api.selectBy({
     table: "users",
@@ -42,36 +41,11 @@ export const register = async (req, res) => {
   if (isEmail)
     return res.status(400).json({ error: validation.isEmail(email) });
 
-  const isValidPassword = validation.isValidPassword(password);
-
-  if (isValidPassword)
-    return res
-      .status(400)
-      .json({ error: validation.isValidPassword(password) });
-
-  const id = randomUUID();
-  const hash = await hashPassword.hash(password);
-
-  const compareHash = await hashPassword.compare(password, hash);
-
-  if (!compareHash)
-    return res.status(400).json({ error: "Could not encrypt password" });
-
-  api.insert({
+  api.update({
     table: "users",
-    items: [
-      {
-        id,
-        nickname,
-        name,
-        birthdate,
-        gender,
-        image: gender === 'M' ? images[0] : images[1] ,
-        email,
-        password: hash,
-      },
-    ],
+    items: [nickname, name, birthdate, gender, email, image],
+    where: { id },
   });
 
-  res.status(201).json({ message: "Usuário criado com sucesso!" });
+  res.status(200).json({ message: "Usuário editado com sucesso!" });
 };

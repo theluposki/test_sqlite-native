@@ -10,10 +10,11 @@ Host: localhost:3327
 content-type: application/json
 
 {
-    "nickname":"marcela",
-    "name":"Marcela G M Albuquerque",
+    "nickname":"Mia Lina",
+    "name":"mia",
     "birthdate":"2007-06-29",
-    "email":"ma@mail.com",
+    "gender":"F",
+    "email":"mia@mail.com",
     "password":"MyPassw0rd#2023"
 }
 
@@ -23,10 +24,14 @@ Host: localhost:3327
 content-type: application/json
 
 {
-    "email":"my@mail.com",
+    "email":"lu@mail.com",
     "password":"MyPassw0rd#2023"
 }
 
 ### get all users
 GET http://localhost:3327/api/v1/users HTTP/1.1
-Cookie: token=eyInvalidToken
+
+
+### my users
+GET http://localhost:3327/api/v1/users/my HTTP/1.1
+

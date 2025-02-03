@@ -19,17 +19,22 @@ const createUsersTable = () => {
   try {
     database.exec(`
       CREATE TABLE IF NOT EXISTS users (
-        nickname TEXT PRIMARY KEY,
+        id TEXT PRIMARY KEY,
+        nickname TEXT UNIQUE,
         name TEXT,
         birthdate TEXT,
+        gender TEXT,
+        image TEXT,
         email TEXT UNIQUE,
-        password TEXT
+        password TEXT,
+        created TEXT DEFAULT (strftime('%s', 'now') * 1000)
       ) STRICT
 `);
     console.log(
       "[\x1b[1mDB\x1b[0m] tabela de usuários criada com sucesso! -> function: \x1b[1mcreateUsersTable\x1b[0m\n"
     );
   } catch (error) {
+    console.error(error)
     console.log(
       "[\x1b[1mDB\x1b[0m] não foi possivel criar tabela de usuários!!! -> function: \x1b[1mcreateUsersTable\x1b[0m\n"
     );

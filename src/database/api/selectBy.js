@@ -7,11 +7,16 @@ import sqlBricks from "sql-bricks";
  * @function
  * @param {Object} params - The parameters for the select operation.
  * @param {string} params.table - The name of the table to select from.
+ * @param {string|string[]} [params.items="*"] - The columns to select.
  * @param {Object} params.where - The condition to filter the records.
  * @returns {string} The selected record in JSON format.
  */
-export const selectBy = ({ table, where }) => {
-  const query = sqlBricks.select("*").from(table).where(where).toString();
+export const selectBy = ({ table, items = "*", where }) => {
+  const query = sqlBricks
+    .select(...items)
+    .from(table)
+    .where(where)
+    .toString();
 
   const result = database.prepare(query).get();
 

@@ -28,9 +28,9 @@ export const validateToken = async (req, res, next) => {
       const newAccessToken = jwt.signAccessToken(decodedRefresh.id);
 
       res.cookie("token", newAccessToken, {
-        httpOnly: true,
-        secure: false,  // Ajuste para true em produção
-        sameSite: "none",
+    httpOnly: true,
+    secure: process.env.NODE_ENV === "development" ? false : true,
+    sameSite: "None" // remova se não for https
       });
 
       req.user = {

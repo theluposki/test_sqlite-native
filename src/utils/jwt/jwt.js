@@ -1,7 +1,6 @@
 import { readFile, access } from "node:fs/promises";
 import jwt from "jsonwebtoken";
 import { generateKeyPEMFile } from "../crypto/index.js";
-import { hoursToMilliseconds } from "../datatime/index.js";
 import logger from "../logger.js";
 
 async function readKeyFile(filePath) {
@@ -29,6 +28,7 @@ try {
   const config = await import("../../config.js");
   accessExpires = config.default?.app?.accessTokenExpiresIn || 1;  // Expiração do access token
   refreshExpires = config.default?.app?.refreshTokenExpiresIn || 7;  // Expiração do refresh token
+
 } catch (error) {
   logger.err("jwt", "Erro ao importar config.js:", error);
   accessExpires = 1;
